@@ -1,12 +1,6 @@
 with payments as (
 
-select * from {{ ref('stg_stripe__payment') }}
-
-),
-
-customers as (
-
-select * from {{ ref('stg_jaffle_shop__customers') }}
+select * from {{ ref('stg_stripe__payments') }}
 
 ),
 
@@ -16,16 +10,29 @@ select * from {{ ref('stg_jaffle_shop__orders') }}
 
 ),
 
+order_payments as (
+
+select * from orders
+inner join payments using (order_id)
+
+)
+
+customers as (
+
+select * from {{ ref('stg_jaffle_shop__customers') }}
+
+),
+
+
 
 final as (
 
     select
         customers.customer_id,
-        payments.order_id,
-        payments.amount
+        order_payments.order_id,
+        order_payments.amount
     from customers
-    left join payments using (customer_id)
-    left join orders using (orderid)
+    left join order_payments using (customer_id)
 
 )
 
