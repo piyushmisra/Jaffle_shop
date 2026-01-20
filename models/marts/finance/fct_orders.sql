@@ -11,39 +11,24 @@ select * from {{ ref('stg_jaffle_shop__orders') }}
 ),
 
 order_payments as (
+    select
+        order_id,
+        sum (case when status = 'success' then amount end) as amount
 
-select 
+    from payments
+    group by 1
+),
+
+ final as (
+
+    select
         orders.order_id,
         orders.customer_id,
         orders.order_date,
+        coalesce (order_payments.amount, 0) as amount
 
-        payments.payment_method,
-        payments.status,
-        payments.amount / 100 as amount,
-        payments.created_as
-
- from orders
-inner join payments using (order_id)
-
-),
-
-customers as (
-
-select * from {{ ref('stg_jaffle_shop__customers') }}
-
-),
-
-
-
-final as (
-
-    select
-        customers.customer_id,
-        order_payments.order_id,
-        order_payments.amount
-    from customers
-    left join order_payments using (customer_id)
-
+    from orders
+    left join order_payments using (order_id)
 )
 
 select * from final
