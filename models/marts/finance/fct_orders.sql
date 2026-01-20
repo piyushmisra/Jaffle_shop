@@ -12,10 +12,20 @@ select * from {{ ref('stg_jaffle_shop__orders') }}
 
 order_payments as (
 
-select * from orders
+select 
+        orders.order_id,
+        orders.customer_id,
+        orders.order_date,
+
+        payments.payment_method,
+        payments.status,
+        payments.amount / 100 as amount,
+        payments.created_as
+
+ from orders
 inner join payments using (order_id)
 
-)
+),
 
 customers as (
 
