@@ -5,4 +5,4 @@
         status,
         amount / 100 as amount,
         created as created_as
-    from raw.stripe.payment
+    from {{ source('stripe', 'payments') }}
