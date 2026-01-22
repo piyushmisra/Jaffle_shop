@@ -1,0 +1,20 @@
+models:
+- name: stg_stripe__payments
+  description: This model processes and transforms payment data from Stripe, providing
+    a structured view of payment transactions. It includes details such as payment
+    identifiers, order associations, payment methods, statuses, amounts, and creation
+    dates, facilitating analysis of payment activities.
+  columns:
+  - name: payment_id
+    description: A unique identifier for each payment transaction.
+  - name: order_id
+    description: The identifier for the order associated with the payment.
+  - name: payment_method
+    description: The method used for the payment, such as credit card or bank transfer.
+  - name: status
+    description: "{{ docs('payments') }}"
+  - name: amount
+    description: The total amount of the payment, converted to a standard currency
+      unit.
+  - name: created_as
+    description: The date and time when the payment was created, in UTC.
