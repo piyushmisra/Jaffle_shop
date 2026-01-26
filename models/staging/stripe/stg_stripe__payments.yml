@@ -12,7 +12,7 @@ models:
   - name: payment_method
     description: The method used for the payment, such as credit card or bank transfer.
   - name: status
-    description: "{{ docs('payments') }}"
+    description: "{{ doc('payments') }}"
   - name: amount
     description: The total amount of the payment, converted to a standard currency
       unit.
